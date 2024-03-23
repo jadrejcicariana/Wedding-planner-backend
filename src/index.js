@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express from 'express'
 import cors from 'cors'
 import connect from './db.js'
@@ -19,22 +22,34 @@ app.post("/users", async (req, res) => {
     } catch (e) {
         res.status(500).json({error: e.message})
     }
-    
-
-    
-
-
 })
 
-app.get('/', async (req, res) => {
-    let db = await connect()
+app.post("/auth", async (req, res) => {
 
-    let cursor = await db.collection("weddingdetails").find()
-    let results = await cursor.toArray()
+    let user = req.body
 
-    console.log("test")
-
-    res.json(results)
+    try {
+        let result = await auth.authenticateUser(user.username, user.password)
+        res.json(result)
+    } catch (e) {
+        res.status(403).json({error: e.message})
+    }   
 })
+
+app.get("/tajna", [auth.verify], (req, res) => {
+
+    res.json({message: 'Ovo je tajna ' + req.jwt.username})
+})
+
+// app.get('/', async (req, res) => {
+//     let db = await connect()
+
+//     let cursor = await db.collection("weddingdetails").find()
+//     let results = await cursor.toArray()
+
+//     console.log("test")
+
+//     res.json(results)
+// })
 
 app.listen(port, () => console.log(`listening on port ${port}`))
