@@ -36,10 +36,10 @@ app.post("/auth", async (req, res) => {
     }   
 })
 
-app.get("/tajna", [auth.verify], (req, res) => {
+// app.get("/tajna", [auth.verify], (req, res) => {
 
-    res.json({message: 'Ovo je tajna ' + req.jwt.username})
-})
+//     res.json({message: 'Ovo je tajna ' + req.jwt.username})
+// })
 
 // app.get('/', async (req, res) => {
 //     let db = await connect()

@@ -1,11 +1,9 @@
 import mongo from "mongodb"
 import { MongoClient } from "mongodb";
+import dotenv from 'dotenv'
+dotenv.config()
 
-
-
-let connection_string = "mongodb+srv://admin:admin@cluster0.ooabnxw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-let client = new MongoClient(connection_string)
+let client = new MongoClient(process.env.CONNECTION_STRING)
 
 let db = null
 
