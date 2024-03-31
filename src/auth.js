@@ -15,7 +15,14 @@ export default {
 
         let doc = {
             username: userData.username,
-            password: await bcrypt.hash(userData.password, 8)
+            password: await bcrypt.hash(userData.password, 8),
+            details: {
+                gname: "Groom",
+                bname: "Bride",
+                date: "2000-01-01",
+                time: "00:00",
+                location: "Location"
+            }
         }
         try { 
             let result = await db.collection("users").insertOne(doc)

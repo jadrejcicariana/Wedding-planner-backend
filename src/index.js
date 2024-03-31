@@ -36,20 +36,15 @@ app.post("/auth", async (req, res) => {
     }   
 })
 
-// app.get("/tajna", [auth.verify], (req, res) => {
 
-//     res.json({message: 'Ovo je tajna ' + req.jwt.username})
-// })
+app.get('/:username', async (req, res) => {
+    let username = req.params.username
+    let db = await connect()
 
-// app.get('/', async (req, res) => {
-//     let db = await connect()
+    let cursor = await db.collection("users").find({username: username})
+    cursor.stream().on("data", doc => res.json(doc));
 
-//     let cursor = await db.collection("weddingdetails").find()
-//     let results = await cursor.toArray()
-
-//     console.log("test")
-
-//     res.json(results)
-// })
+    console.log("test details")
+})
 
 app.listen(port, () => console.log(`listening on port ${port}`))
