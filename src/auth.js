@@ -22,6 +22,15 @@ export default {
                 date: "2000-01-01",
                 time: "00:00",
                 location: "Location"
+            },
+            results: {
+                expensestotal: 0,
+                expensespaid: 0,
+                expensesunpaid: 0,
+                gueststotal: 0,
+                guestsconfirmed: 0,
+                guestsdeclined: 0,
+                guestsawaiting: 0
             }
         }
         try { 
