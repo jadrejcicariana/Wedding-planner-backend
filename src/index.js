@@ -81,4 +81,15 @@ app.patch('/:username/expenses', async (req, res) => {
         res.json ({ status: "fail" })
     }
 })
+
+app.get('/:username/expenses', async (req, res) => {
+    let username = req.params.username
+    let db = await connect()
+
+    let cursor = await db.collection("users").find({username: username})
+    cursor.stream().on("data", doc => res.json(doc.expenses));
+    
+
+    console.log("test expenses")
+})
 app.listen(port, () => console.log(`listening on port ${port}`))
