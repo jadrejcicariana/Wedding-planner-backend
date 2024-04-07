@@ -47,4 +47,21 @@ app.get('/:username', async (req, res) => {
     console.log("test details")
 })
 
+app.patch('/:username', async (req, res) => {
+    let username = req.params.username
+    let data = req.body
+    let db = await connect ()
+
+    let result = await db.collection('users').updateOne({username: username}, {
+        $set: data
+    }
+    )
+
+    if (result && result.modifiedCount == 1) {
+        res.json ({ status: "success" })
+    } else {
+        res.json ({ status: "fail" })
+    }
+})
+
 app.listen(port, () => console.log(`listening on port ${port}`))

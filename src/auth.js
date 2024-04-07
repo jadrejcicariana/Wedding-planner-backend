@@ -31,7 +31,12 @@ export default {
                 guestsconfirmed: 0,
                 guestsdeclined: 0,
                 guestsawaiting: 0
-            }
+            },
+            expenses: [
+            ],
+            guests: [
+                
+            ]
         }
         try { 
             let result = await db.collection("users").insertOne(doc)
