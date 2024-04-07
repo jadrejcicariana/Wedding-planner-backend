@@ -50,7 +50,7 @@ app.get('/:username', async (req, res) => {
 app.patch('/:username', async (req, res) => {
     let username = req.params.username
     let data = req.body
-    let db = await connect ()
+    let db = await connect()
 
     let result = await db.collection('users').updateOne({username: username}, {
         $set: data
@@ -64,4 +64,21 @@ app.patch('/:username', async (req, res) => {
     }
 })
 
+app.patch('/:username/expenses', async (req, res) => {
+    let username = req.params.username
+    let data = req.body
+    let db = await connect()
+
+    let result = await db.collection('users').updateOne({username: username}, {
+        $push: {
+            expenses: {data}
+        }
+    })
+    if (result && result.modifiedCount == 1) {
+        res.json ({ status: "success" })
+        console.log(data)
+    } else {
+        res.json ({ status: "fail" })
+    }
+})
 app.listen(port, () => console.log(`listening on port ${port}`))
