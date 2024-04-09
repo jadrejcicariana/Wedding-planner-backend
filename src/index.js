@@ -92,4 +92,34 @@ app.get('/:username/expenses', async (req, res) => {
 
     console.log("test expenses")
 })
+
+app.patch('/:username/guests', async (req, res) => {
+    let username = req.params.username
+    let data = req.body
+    let db = await connect()
+
+    let result = await db.collection('users').updateOne({username: username}, {
+        $push: {
+            guests: {data}
+        }
+    })
+    if (result && result.modifiedCount == 1) {
+        res.json ({ status: "success" })
+        console.log(data)
+    } else {
+        res.json ({ status: "fail" })
+    }
+})
+
+app.get('/:username/guests', async (req, res) => {
+    let username = req.params.username
+    let db = await connect()
+
+    let cursor = await db.collection("users").find({username: username})
+    cursor.stream().on("data", doc => res.json(doc.guests));
+    
+
+    console.log("test guests")
+})
+
 app.listen(port, () => console.log(`listening on port ${port}`))
