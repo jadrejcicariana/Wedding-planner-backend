@@ -138,4 +138,23 @@ app.patch('/:username/expenses/:title', async (req, res) => {
     }
 })
 
+app.patch('/:username/guests/:name', async (req, res) => {
+    let username = req.params.username
+    let name = req.params.name
+    let db = await connect()
+
+    let result = await db.collection('users').updateOne({username: username}, {
+        $pull: {
+            guests: {            
+                "data.name": name
+            }
+        }  
+    })
+    if (result && result.modifiedCount == 1) {
+        res.json ({ status: "success" })
+    } else {
+        res.json ({ status: "fail" })
+    }
+})
+
 app.listen(port, () => console.log(`listening on port ${port}`))
