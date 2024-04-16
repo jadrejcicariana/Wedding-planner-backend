@@ -54,8 +54,7 @@ app.patch('/:username', async (req, res) => {
 
     let result = await db.collection('users').updateOne({username: username}, {
         $set: data
-    }
-    )
+    })
 
     if (result && result.modifiedCount == 1) {
         res.json ({ status: "success" })
@@ -89,7 +88,6 @@ app.get('/:username/expenses', async (req, res) => {
     let cursor = await db.collection("users").find({username: username})
     cursor.stream().on("data", doc => res.json(doc.expenses));
     
-
     console.log("test expenses")
 })
 
@@ -118,8 +116,26 @@ app.get('/:username/guests', async (req, res) => {
     let cursor = await db.collection("users").find({username: username})
     cursor.stream().on("data", doc => res.json(doc.guests));
     
-
     console.log("test guests")
+})
+
+app.patch('/:username/expenses/:title', async (req, res) => {
+    let username = req.params.username
+    let title = req.params.title
+    let db = await connect()
+
+    let result = await db.collection('users').updateOne({username: username}, {
+        $pull: {
+            expenses: {            
+                "data.title": title
+            }
+        }  
+    })
+    if (result && result.modifiedCount == 1) {
+        res.json ({ status: "success" })
+    } else {
+        res.json ({ status: "fail" })
+    }
 })
 
 app.listen(port, () => console.log(`listening on port ${port}`))
