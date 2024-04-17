@@ -98,7 +98,7 @@ app.patch('/:username/guests', async (req, res) => {
 
     let result = await db.collection('users').updateOne({username: username}, {
         $push: {
-            guests: {data}
+            guests: data
         }
     })
     if (result && result.modifiedCount == 1) {
@@ -146,7 +146,7 @@ app.patch('/:username/guests/:name', async (req, res) => {
     let result = await db.collection('users').updateOne({username: username}, {
         $pull: {
             guests: {            
-                "data.name": name
+                name: name
             }
         }  
     })
